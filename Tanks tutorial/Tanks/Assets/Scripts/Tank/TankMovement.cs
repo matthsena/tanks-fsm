@@ -17,6 +17,7 @@ public class TankMovement : MonoBehaviour
     private float m_MovementInputValue;    
     private float m_TurnInputValue;        
     private float m_OriginalPitch;         
+    public bool m_IsAI;
 
 
     private void Awake()
@@ -50,12 +51,14 @@ public class TankMovement : MonoBehaviour
 
     private void Update()
     {
-        // Store the player's input and make sure the audio for the engine is playing.
-        // Value of vertical moviment
-        m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-        // Value of horizontal moviment
-		m_TurnInputValue = Input.GetAxis (m_TurnAxisName);
-
+        if (!m_IsAI) {
+            // Store the player's input and make sure the audio for the engine is playing.
+            // Value of vertical moviment
+            m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
+            // Value of horizontal moviment
+            m_TurnInputValue = Input.GetAxis (m_TurnAxisName);
+        }
+        
 		EngineAudio ();
     }
 

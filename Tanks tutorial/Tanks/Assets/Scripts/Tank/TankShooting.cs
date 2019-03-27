@@ -20,6 +20,7 @@ public class TankShooting : MonoBehaviour
     private float m_ChargeSpeed;         
     private bool m_Fired;                
 
+    public bool m_IsAI;
 
     private void OnEnable()
     {
@@ -38,6 +39,9 @@ public class TankShooting : MonoBehaviour
 
     private void Update()
     {
+        if (m_IsAI) {
+            return;
+        }
         // Track the current state of the fire button and make decisions based on the current launch force.
         m_AimSlider.value = m_MinLaunchForce;
 
@@ -68,6 +72,9 @@ public class TankShooting : MonoBehaviour
 
     private void Fire()
     {
+        if (m_IsAI) {
+            m_CurrentLaunchForce = m_MaxLaunchForce / 2.0f;
+        }
         // Instantiate and launch the shell.
         m_Fired = true;
 
