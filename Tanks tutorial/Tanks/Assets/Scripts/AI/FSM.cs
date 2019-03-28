@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class FSM : Complete.TankMovement 
+public class FSM : TankMovement 
 {
     protected Vector3 destPos;
     protected GameObject[] pointList;

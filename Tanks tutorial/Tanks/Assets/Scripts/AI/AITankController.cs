@@ -82,7 +82,7 @@ public class AITankController : FSM
        
         Collider[] players = Physics.OverlapSphere(transform.position, 15.0f, LayerMask.GetMask("Players"));
         
-        if (players.Length > 0)
+        if (players.Length > 1)
         {
             Debug.Log(players.Length);
             curState = FSMState.Attack;
