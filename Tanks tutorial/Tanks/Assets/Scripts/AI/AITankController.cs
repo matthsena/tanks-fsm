@@ -8,9 +8,10 @@ public class AITankController : FSM
     public TankHealth tankHealth;
     private bool isDead = false;
     private float elapsedTime = 0.0f;
-    private float shootRate = 3.0f;
+    private float shootRate = 0.75f;
     private GameObject player = null;
     private NavMeshAgent navMeshAgent;
+    private float _distancia; 
     public enum FSMState 
     {
         None, Patrol, Attack, Dead,
@@ -46,8 +47,8 @@ public class AITankController : FSM
         elapsedTime += Time.deltaTime;
 
         // go to dead state is no health left
-    //   if (tankHealth.m_StartingHealth <= 0)
-      //      curState = FSMState.Dead;
+       if (tankHealth.m_CurrentHealth <= 0)
+            curState = FSMState.Dead;
     }
     private void UpdateDeadState() 
     {
@@ -57,30 +58,33 @@ public class AITankController : FSM
     }
     private void UpdateAttackState()
     {
-        Collider[] players = Physics.OverlapSphere(transform.position, 15.0f, LayerMask.GetMask(" Players"));
+        Collider[] players = Physics.OverlapSphere(transform.position, 15.0f, LayerMask.GetMask("Players"));
         if (players.Length == 0)
         {
             curState = FSMState.Patrol;
             player = null;
             navMeshAgent.enabled = true;
             return;
-        }
+        } 
         player = players[0].gameObject;
         Vector3 _direction = (player.transform.position - transform.position).normalized;
         Quaternion _lookRotation = Quaternion.LookRotation(_direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 3);
+        transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 3); 
         if (elapsedTime > shootRate)
         {
-           // this.tankShooter.Fire();
+           this.tankShooter.Fire();
             elapsedTime = 0;
         }
     }
 
     private void UpdatePatrolState()
     {
-        Collider[] players = Physics.OverlapSphere(transform.position, 10.0f, LayerMask.GetMask(" Players"));
+       
+        Collider[] players = Physics.OverlapSphere(transform.position, 15.0f, LayerMask.GetMask("Players"));
+        
         if (players.Length > 0)
         {
+            Debug.Log(players.Length);
             curState = FSMState.Attack;
             player = players[0].gameObject;
             navMeshAgent.enabled = false;
