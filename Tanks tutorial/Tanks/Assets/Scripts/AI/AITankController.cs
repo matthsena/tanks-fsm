@@ -4,8 +4,8 @@ using UnityEngine.AI;
 
 public class AITankController : FSM 
 {
-    public Complete.TankShooting tankShooter;
-    public Complete.TankHealth tankHealth;
+    public TankShooting tankShooter;
+    public TankHealth tankHealth;
     private bool isDead = false;
     private float elapsedTime = 0.0f;
     private float shootRate = 3.0f;
@@ -46,8 +46,8 @@ public class AITankController : FSM
         elapsedTime += Time.deltaTime;
 
         // go to dead state is no health left
-        /*if (tankHealth.m_CurrentHealth <= 0)
-            curState = FSMState.Dead;*/
+    //   if (tankHealth.m_StartingHealth <= 0)
+      //      curState = FSMState.Dead;
     }
     private void UpdateDeadState() 
     {

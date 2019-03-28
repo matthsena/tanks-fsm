@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class TankHealth : MonoBehaviour
 {
-    public float m_StartingHealth = 100f;          
+    public float m_StartingHealth = 100f;   
+    public float m_CurrentHealth = 100f;         
 	public Slider m_Slider;                        
     public Image m_FillImage;                      
     public Color m_FullHealthColor = Color.green;  
@@ -12,7 +13,7 @@ public class TankHealth : MonoBehaviour
     
     private AudioSource m_ExplosionAudio;          
     private ParticleSystem m_ExplosionParticles;   
-    private float m_CurrentHealth;  
+    
     private bool m_Dead;            
 
 

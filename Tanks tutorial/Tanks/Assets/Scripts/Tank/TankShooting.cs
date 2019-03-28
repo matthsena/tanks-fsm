@@ -70,7 +70,7 @@ public class TankShooting : MonoBehaviour
     }
 
 
-    private void Fire()
+    public void Fire()
     {
         if (m_IsAI) {
             m_CurrentLaunchForce = m_MaxLaunchForce / 2.0f;
