@@ -14,10 +14,11 @@ public class TankHealth : MonoBehaviour {
     private ParticleSystem m_ExplosionParticles;
 
     private bool m_Dead;
-    private int count = 0;
+    private int count;
     public TankManager[] m_Tanks;
 
-    private void Awake () {
+    private void Awake () { 
+
         m_ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
         m_ExplosionAudio = m_ExplosionParticles.GetComponent<AudioSource> ();
 
@@ -48,8 +49,9 @@ public class TankHealth : MonoBehaviour {
     }
 
     private void OnDeath () {
-        count++;
-        if (count == 3) {
+
+        count++;   
+        if (count >= 3) {
             // Play the effects for the death of the tank and deactivate it.
             m_Dead = true;
             m_ExplosionParticles.transform.position = transform.position;
@@ -58,13 +60,10 @@ public class TankHealth : MonoBehaviour {
             m_ExplosionAudio.Play ();
 
             gameObject.SetActive (false);
+            count = 0;
         } else {
             m_CurrentHealth = m_StartingHealth;
             SetHealthUI ();
-            m_Tanks[i].Reset ();
-            //for (int i = 0; i < m_Tanks.Length; i++) {
-              //      
-            //}
         }
 
     }
