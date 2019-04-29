@@ -11,16 +11,20 @@ public class TankManager
     [HideInInspector] public GameObject m_Instance;          
     [HideInInspector] public int m_Wins;                     
 
-
+    private TankInfos m_Infos;
     private TankMovement m_Movement;       
     private TankShooting m_Shooting;
+    private TankHealth m_Health;
     private GameObject m_CanvasGameObject;
 
 
     public void Setup()
     {
+        m_Infos = m_Instance.GetComponent<TankInfos>();
         m_Movement = m_Instance.GetComponent<TankMovement>();
         m_Shooting = m_Instance.GetComponent<TankShooting>();
+        m_Health = m_Instance.GetComponent<TankHealth>();
+
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 
         m_Movement.m_PlayerNumber = m_PlayerNumber;
@@ -62,5 +66,15 @@ public class TankManager
 
         m_Instance.SetActive(false);
         m_Instance.SetActive(true);
+    }
+
+    public void UpdateInfos(String value) {
+        String lifeNumber = "";
+        for (int i = m_Health.count; i < 3; i++) {
+            lifeNumber += "*";
+        }
+            
+        m_Infos.m_TankInfo.text = value + " " + lifeNumber;
+
     }
 }

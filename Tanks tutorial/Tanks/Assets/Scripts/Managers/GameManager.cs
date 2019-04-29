@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
                 m_Tanks[i].m_PlayerNumber = i + 1;
                 m_Tanks[i].Setup();
             }
+
+            m_Tanks[i].UpdateInfos("P" + (i + 1));
             
         }
     }

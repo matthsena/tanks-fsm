@@ -14,7 +14,7 @@ public class TankHealth : MonoBehaviour {
     private ParticleSystem m_ExplosionParticles;
 
     private bool m_Dead;
-    private int count;
+    public int count = 0;
     public TankManager[] m_Tanks;
 
     private void Awake () { 
@@ -51,6 +51,8 @@ public class TankHealth : MonoBehaviour {
     private void OnDeath () {
 
         count++;   
+
+
         if (count >= 3) {
             // Play the effects for the death of the tank and deactivate it.
             m_Dead = true;
