@@ -107,6 +107,8 @@ public class TankHealth : MonoBehaviour
         transform.position = m_pos;
 
         m_CurrentHealth = m_StartingHealth;
+
+        m_Rigidbody.isKinematic = false;
         SetHealthUI();
 
     }
