@@ -16,6 +16,7 @@ public class TankHealth : MonoBehaviour {
     private bool m_Dead;
     public int count = 0;
     public TankManager[] m_Tanks;
+    private TankInfos m_Infos;
 
     private void Awake () { 
 
