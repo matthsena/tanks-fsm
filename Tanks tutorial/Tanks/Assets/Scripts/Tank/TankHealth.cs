@@ -17,7 +17,7 @@ public class TankHealth : MonoBehaviour {
     public int count = 0;
     public TankManager[] m_Tanks;
     private TankInfos m_Infos;
-
+    public Text m_HealthText;
     private void Awake () { 
 
         m_ExplosionParticles = Instantiate (m_ExplosionPrefab).GetComponent<ParticleSystem> ();
@@ -27,6 +27,7 @@ public class TankHealth : MonoBehaviour {
     }
 
     private void OnEnable () {
+        m_HealthText.text = "♥♥♥";
         m_CurrentHealth = m_StartingHealth;
         m_Dead = false;
 
@@ -50,9 +51,8 @@ public class TankHealth : MonoBehaviour {
     }
 
     private void OnDeath () {
-
         count++;   
-
+       
 
         if (count >= 3) {
             // Play the effects for the death of the tank and deactivate it.
@@ -65,6 +65,21 @@ public class TankHealth : MonoBehaviour {
             gameObject.SetActive (false);
             count = 0;
         } else {
+            switch (count)
+            {
+                case 0: 
+                    m_HealthText.text = "♥♥♥";
+                    break;
+                case 1: 
+                    m_HealthText.text = "♥♥";
+                    break;
+                case 2:
+                    m_HealthText.text = "♥";
+                    break;
+                case 3: 
+                    m_HealthText.text = "Dead";
+                    break;
+            }
             m_CurrentHealth = m_StartingHealth;
             SetHealthUI ();
         }
