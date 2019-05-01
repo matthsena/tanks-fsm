@@ -14,17 +14,15 @@ public class AITankController : FSM
     private float shootRate = 0.75f;
     private GameObject player = null;
     private NavMeshAgent navMeshAgent;
-    // Definindo os 4 estados possíveis de nossa FSM
+    // Intervalo para iniciar o script
     private float enableTime = 3.0f;
     private bool isEnabled = false;
-
+    // Definindo os 4 estados possíveis de nossa FSM
     public enum FSMState
     {
         None, Patrol, Attack, Dead,
     }
     public FSMState curState;
-     
-
     /*
     * Iniciando a FSM para o tanque que utiliza AI
     */
@@ -36,15 +34,13 @@ public class AITankController : FSM
         pointList = GameObject.FindGameObjectsWithTag("PatrolPoint");
         // Gera um valor aleatório para definir o próximo ponto
         int rndIndex = UnityEngine.Random.Range(0, pointList.Length);
-    
+        // Vai em direção ao próximo ponto
         destPos = pointList[rndIndex].transform.position;
-        
     }
-
-
-    // Update do estado FSM muda
+    // Update do estado FSM
     protected override void FSMUpdate()
     {
+        // Verifica qual estado atual e executa as funções respectivas
         switch (curState)
         {
             case FSMState.Patrol:
@@ -57,8 +53,10 @@ public class AITankController : FSM
                 UpdateDeadState();
                 break;
         }
+        // Verifica se já é hora de iniciar a FSM
         enableTime -= Time.deltaTime;
         if (enableTime < 0 && !isEnabled) {
+            // Caso verdadeiro ela irá iniciar no modo patrulha
              curState = FSMState.Patrol;
              isEnabled = true;   
         }
@@ -71,7 +69,6 @@ public class AITankController : FSM
             isDead = true;
             curState = FSMState.Dead;
         }
-
     }
     // Caso a FSM esteja no estado morto
     private void UpdateDeadState()

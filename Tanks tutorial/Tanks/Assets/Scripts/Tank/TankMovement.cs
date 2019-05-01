@@ -9,8 +9,6 @@ public class TankMovement : MonoBehaviour
     public AudioClip m_EngineIdling;       
     public AudioClip m_EngineDriving;      
     public float m_PitchRange = 0.2f;
-
-    
     private string m_MovementAxisName;     
     private string m_TurnAxisName;         
     private Rigidbody m_Rigidbody;         
@@ -19,27 +17,28 @@ public class TankMovement : MonoBehaviour
     private float m_OriginalPitch;         
     public bool m_IsAI;
 
-
+    // Quando o objeto "acorda"
     private void Awake()
     {
+        // Definimos qual seu rigidbody
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-
+    // Quando o tanque está habilitado
     private void OnEnable ()
     {
+        // O fica sensível a física (forças, colisões etc)
         m_Rigidbody.isKinematic = false;
         m_MovementInputValue = 0f;
         m_TurnInputValue = 0f;
     }
-
-
+    // Quando está desabilitado
     private void OnDisable ()
     {
+        // Deixa o objeto imune a forças, colisões etc
         m_Rigidbody.isKinematic = true;
     }
-
-
+    
     private void Start()
     {
         m_MovementAxisName = "Vertical" + m_PlayerNumber;
@@ -48,38 +47,36 @@ public class TankMovement : MonoBehaviour
         m_OriginalPitch = m_MovementAudio.pitch;
     }
     
-
+    // Nas atualizações
     private void Update()
-    {
+    {   
+        // Caso não seja uma AI
         if (!m_IsAI) {
-            // Store the player's input and make sure the audio for the engine is playing.
-            // Value of vertical moviment
+            // Valor do movimento vertical
             m_MovementInputValue = Input.GetAxis(m_MovementAxisName);
-            // Value of horizontal moviment
+            // Valor do movimento horizontal
             m_TurnInputValue = Input.GetAxis (m_TurnAxisName);
         }
-        
+        // função para ligar o audio
 		EngineAudio ();
     }
-
-
+    // Reproduz o som com base na movimentação do tanque
     private void EngineAudio()
     {
-        // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
-        // Tank is stopped
+        // Tanque está paradao
         if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f) 
 		{
-            // If the sound was engine driving change to engine Idling
+            //Se o som era o de movimento mudar para o de repouso
 			if (m_MovementAudio.clip == m_EngineDriving) {
 				m_MovementAudio.clip = m_EngineIdling;
 				m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch - m_PitchRange);
 				m_MovementAudio.Play ();
 			}
 		} 
-        // Tank is running 
+        // Tanque está andando
 		else 
 		{
-            // If the sound was engine Idling change to engine driving
+            // Se o som era de repouso mudar para o de movimento
 			if (m_MovementAudio.clip == m_EngineIdling) {
 				m_MovementAudio.clip = m_EngineDriving;
 				m_MovementAudio.pitch = Random.Range (m_OriginalPitch - m_PitchRange, m_OriginalPitch - m_PitchRange);
@@ -88,36 +85,31 @@ public class TankMovement : MonoBehaviour
 			
 		}
     }
-
-
+    // Atualizações fixas
     private void FixedUpdate()
     {
-        // Move and turn the tank.
+        // Mover e rotacionar o tanque
 		Move ();
 		Turn ();
     }
-
-
+    // Mover
     private void Move()
     {
-        // Adjust the position of the tank based on the player's input.
-        // transform forward * vertical moviment * tank speed * time that it's runnig
+        // Ajustar a posição do tanque com base nos inputs do player
         Vector3 moment = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
 
-        // Current position plus the moment
+        // A posição para qual ele irá se movimentar é a atual com a moment
 		m_Rigidbody.MovePosition (m_Rigidbody.position + moment);
        
     }
-
-
+    // Girar
     private void Turn()
     {
-        // Adjust the rotation of the tank based on the player's input.
-        // Horizontal moviment * tank speed * time that it's running
+        // Ajusta a rotação com os inputs do player
         float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
-        // 3D rotation 
+        // Rotação 3D 
 		Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);
-        // Current rotarion * rotation based on input
+        // A rotação vai ser a atual * pela rotação 3D baseada nos inputs do plater
 		m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
     }
 }

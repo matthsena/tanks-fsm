@@ -10,7 +10,6 @@ public class ShellExplosion : MonoBehaviour
     public float m_MaxLifeTime = 2f;                  
     public float m_ExplosionRadius = 5f;              
 
-
     private void Start()
     {
         Destroy(gameObject, m_MaxLifeTime);
@@ -19,7 +18,7 @@ public class ShellExplosion : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Find all the tanks in an area around the shell and damage them.
+        // Encontra todos os tanques ao redor da explosão da bala e danifica os mesmos
 		Collider[] colliders = Physics.OverlapSphere (transform.position, m_ExplosionRadius, m_TankMask);
 
 		for (int i= 0; i < colliders.Length; i ++) {
@@ -39,22 +38,18 @@ public class ShellExplosion : MonoBehaviour
 
 			targetHelth.TakeDamage(damage);
 
-
 		}
-
 		m_ExplosionParticles.transform.parent = null;
 		m_ExplosionParticles.Play();
 		m_ExplosionAudio.Play();
 
 		Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
 		Destroy(gameObject);
-
     }
 
-
+	// Calcula o dano que um tanque pode obter baseada em sua posição
     private float CalculateDamage(Vector3 targetPosition)
     {
-        // Calculate the amount of damage a target should take based on it's position.
 		Vector3 explosionToTarget = targetPosition - transform.position;
 
 		float explosionDistance	= explosionToTarget.magnitude;
